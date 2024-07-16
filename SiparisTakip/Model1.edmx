@@ -1,0 +1,409 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="DhSoftDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="MusteriTbl">
+          <Key>
+            <PropertyRef Name="MusteriID" />
+          </Key>
+          <Property Name="MusteriID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ad" Type="nvarchar" MaxLength="30" />
+          <Property Name="Soyad" Type="nvarchar" MaxLength="30" />
+          <Property Name="Adres" Type="nvarchar" MaxLength="100" />
+          <Property Name="TelNo" Type="char" MaxLength="10" />
+          <Property Name="TcKimlikNo" Type="char" MaxLength="11" />
+        </EntityType>
+        <EntityType Name="SiparisDetayTbl">
+          <Key>
+            <PropertyRef Name="SiparisDetayID" />
+          </Key>
+          <Property Name="SiparisDetayID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SiparisID" Type="int" />
+          <Property Name="UrunID" Type="int" />
+          <Property Name="UrunAdet" Type="int" />
+          <Property Name="AdetFiyat" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="ToplamFiyat" Type="decimal" Precision="18" Scale="0" />
+        </EntityType>
+        <EntityType Name="SiparisTbl">
+          <Key>
+            <PropertyRef Name="SiparisID" />
+          </Key>
+          <Property Name="SiparisID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MusteriID" Type="int" />
+          <Property Name="SiparisKayıtTarih" Type="date" />
+          <Property Name="SiparisTeslimTarih" Type="date" />
+          <Property Name="SiparisAciklama" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="UrunTbl">
+          <Key>
+            <PropertyRef Name="UrunID" />
+          </Key>
+          <Property Name="UrunID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UrunAdi" Type="nvarchar" MaxLength="30" />
+          <Property Name="BarkodNO" Type="char" MaxLength="13" />
+          <Property Name="StokAdeti" Type="int" />
+          <Property Name="Fiyati" Type="decimal" Precision="18" Scale="0" />
+        </EntityType>
+        <Association Name="FK_SiparisDetayTbl_SiparisTbl">
+          <End Role="SiparisTbl" Type="Self.SiparisTbl" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="SiparisDetayTbl" Type="Self.SiparisDetayTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SiparisTbl">
+              <PropertyRef Name="SiparisID" />
+            </Principal>
+            <Dependent Role="SiparisDetayTbl">
+              <PropertyRef Name="SiparisID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SiparisDetayTbl_UrunTbl">
+          <End Role="UrunTbl" Type="Self.UrunTbl" Multiplicity="0..1" />
+          <End Role="SiparisDetayTbl" Type="Self.SiparisDetayTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UrunTbl">
+              <PropertyRef Name="UrunID" />
+            </Principal>
+            <Dependent Role="SiparisDetayTbl">
+              <PropertyRef Name="UrunID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SiparisTbl_MusteriTbl">
+          <End Role="MusteriTbl" Type="Self.MusteriTbl" Multiplicity="0..1" />
+          <End Role="SiparisTbl" Type="Self.SiparisTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MusteriTbl">
+              <PropertyRef Name="MusteriID" />
+            </Principal>
+            <Dependent Role="SiparisTbl">
+              <PropertyRef Name="MusteriID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+        <Function Name="SiparisFormu" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <EntityContainer Name="DhSoftDBModelStoreContainer">
+          <EntitySet Name="MusteriTbl" EntityType="Self.MusteriTbl" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SiparisDetayTbl" EntityType="Self.SiparisDetayTbl" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SiparisTbl" EntityType="Self.SiparisTbl" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UrunTbl" EntityType="Self.UrunTbl" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_SiparisDetayTbl_SiparisTbl" Association="Self.FK_SiparisDetayTbl_SiparisTbl">
+            <End Role="SiparisTbl" EntitySet="SiparisTbl" />
+            <End Role="SiparisDetayTbl" EntitySet="SiparisDetayTbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SiparisDetayTbl_UrunTbl" Association="Self.FK_SiparisDetayTbl_UrunTbl">
+            <End Role="UrunTbl" EntitySet="UrunTbl" />
+            <End Role="SiparisDetayTbl" EntitySet="SiparisDetayTbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SiparisTbl_MusteriTbl" Association="Self.FK_SiparisTbl_MusteriTbl">
+            <End Role="MusteriTbl" EntitySet="MusteriTbl" />
+            <End Role="SiparisTbl" EntitySet="SiparisTbl" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DhSoftDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="MusteriTbl">
+          <Key>
+            <PropertyRef Name="MusteriID" />
+          </Key>
+          <Property Name="MusteriID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ad" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Soyad" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Adres" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="TelNo" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="TcKimlikNo" Type="String" MaxLength="11" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="SiparisTbl" Relationship="Self.FK_SiparisTbl_MusteriTbl" FromRole="MusteriTbl" ToRole="SiparisTbl" />
+        </EntityType>
+        <EntityType Name="SiparisDetayTbl">
+          <Key>
+            <PropertyRef Name="SiparisDetayID" />
+          </Key>
+          <Property Name="SiparisDetayID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SiparisID" Type="Int32" />
+          <Property Name="UrunID" Type="Int32" />
+          <Property Name="UrunAdet" Type="Int32" />
+          <Property Name="AdetFiyat" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="ToplamFiyat" Type="Decimal" Precision="18" Scale="0" />
+          <NavigationProperty Name="SiparisTbl" Relationship="Self.FK_SiparisDetayTbl_SiparisTbl" FromRole="SiparisDetayTbl" ToRole="SiparisTbl" />
+          <NavigationProperty Name="UrunTbl" Relationship="Self.FK_SiparisDetayTbl_UrunTbl" FromRole="SiparisDetayTbl" ToRole="UrunTbl" />
+        </EntityType>
+        <EntityType Name="SiparisTbl">
+          <Key>
+            <PropertyRef Name="SiparisID" />
+          </Key>
+          <Property Name="SiparisID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MusteriID" Type="Int32" />
+          <Property Name="SiparisKayıtTarih" Type="DateTime" Precision="0" />
+          <Property Name="SiparisTeslimTarih" Type="DateTime" Precision="0" />
+          <Property Name="SiparisAciklama" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MusteriTbl" Relationship="Self.FK_SiparisTbl_MusteriTbl" FromRole="SiparisTbl" ToRole="MusteriTbl" />
+          <NavigationProperty Name="SiparisDetayTbl" Relationship="Self.FK_SiparisDetayTbl_SiparisTbl" FromRole="SiparisTbl" ToRole="SiparisDetayTbl" />
+        </EntityType>
+        <EntityType Name="UrunTbl">
+          <Key>
+            <PropertyRef Name="UrunID" />
+          </Key>
+          <Property Name="UrunID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UrunAdi" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="BarkodNO" Type="String" MaxLength="13" FixedLength="true" Unicode="false" />
+          <Property Name="StokAdeti" Type="Int32" />
+          <Property Name="Fiyati" Type="Decimal" Precision="18" Scale="0" />
+          <NavigationProperty Name="SiparisDetayTbl" Relationship="Self.FK_SiparisDetayTbl_UrunTbl" FromRole="UrunTbl" ToRole="SiparisDetayTbl" />
+        </EntityType>
+        <Association Name="FK_SiparisTbl_MusteriTbl">
+          <End Role="MusteriTbl" Type="Self.MusteriTbl" Multiplicity="0..1" />
+          <End Role="SiparisTbl" Type="Self.SiparisTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MusteriTbl">
+              <PropertyRef Name="MusteriID" />
+            </Principal>
+            <Dependent Role="SiparisTbl">
+              <PropertyRef Name="MusteriID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SiparisDetayTbl_SiparisTbl">
+          <End Role="SiparisTbl" Type="Self.SiparisTbl" Multiplicity="0..1" />
+          <End Role="SiparisDetayTbl" Type="Self.SiparisDetayTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SiparisTbl">
+              <PropertyRef Name="SiparisID" />
+            </Principal>
+            <Dependent Role="SiparisDetayTbl">
+              <PropertyRef Name="SiparisID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SiparisDetayTbl_UrunTbl">
+          <End Role="UrunTbl" Type="Self.UrunTbl" Multiplicity="0..1" />
+          <End Role="SiparisDetayTbl" Type="Self.SiparisDetayTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UrunTbl">
+              <PropertyRef Name="UrunID" />
+            </Principal>
+            <Dependent Role="SiparisDetayTbl">
+              <PropertyRef Name="UrunID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DhSoftDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="MusteriTbl" EntityType="Self.MusteriTbl" />
+          <EntitySet Name="SiparisDetayTbl" EntityType="Self.SiparisDetayTbl" />
+          <EntitySet Name="SiparisTbl" EntityType="Self.SiparisTbl" />
+          <EntitySet Name="UrunTbl" EntityType="Self.UrunTbl" />
+          <AssociationSet Name="FK_SiparisTbl_MusteriTbl" Association="Self.FK_SiparisTbl_MusteriTbl">
+            <End Role="MusteriTbl" EntitySet="MusteriTbl" />
+            <End Role="SiparisTbl" EntitySet="SiparisTbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SiparisDetayTbl_SiparisTbl" Association="Self.FK_SiparisDetayTbl_SiparisTbl">
+            <End Role="SiparisTbl" EntitySet="SiparisTbl" />
+            <End Role="SiparisDetayTbl" EntitySet="SiparisDetayTbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SiparisDetayTbl_UrunTbl" Association="Self.FK_SiparisDetayTbl_UrunTbl">
+            <End Role="UrunTbl" EntitySet="UrunTbl" />
+            <End Role="SiparisDetayTbl" EntitySet="SiparisDetayTbl" />
+          </AssociationSet>
+          <FunctionImport Name="SiparisFormu" ReturnType="Collection(DhSoftDBModel.SiparisFormu_Result)" />
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(DhSoftDBModel.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(DhSoftDBModel.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
+        </EntityContainer>
+        <ComplexType Name="SiparisFormu_Result">
+          <Property Type="String" Name="Ad" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="UrunAdi" Nullable="true" MaxLength="30" />
+          <Property Type="Int32" Name="UrunAdet" Nullable="true" />
+          <Property Type="Decimal" Name="AdetFiyat" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="ToplamFiyat" Nullable="true" Precision="10" />
+          <Property Type="DateTime" Name="SiparisKayıtTarih" Nullable="true" />
+          <Property Type="DateTime" Name="SiparisTeslimTarih" Nullable="true" />
+          <Property Type="String" Name="SiparisAciklama" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DhSoftDBModelStoreContainer" CdmEntityContainer="DhSoftDBEntities">
+          <EntitySetMapping Name="MusteriTbl">
+            <EntityTypeMapping TypeName="DhSoftDBModel.MusteriTbl">
+              <MappingFragment StoreEntitySet="MusteriTbl">
+                <ScalarProperty Name="MusteriID" ColumnName="MusteriID" />
+                <ScalarProperty Name="Ad" ColumnName="Ad" />
+                <ScalarProperty Name="Soyad" ColumnName="Soyad" />
+                <ScalarProperty Name="Adres" ColumnName="Adres" />
+                <ScalarProperty Name="TelNo" ColumnName="TelNo" />
+                <ScalarProperty Name="TcKimlikNo" ColumnName="TcKimlikNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SiparisDetayTbl">
+            <EntityTypeMapping TypeName="DhSoftDBModel.SiparisDetayTbl">
+              <MappingFragment StoreEntitySet="SiparisDetayTbl">
+                <ScalarProperty Name="SiparisDetayID" ColumnName="SiparisDetayID" />
+                <ScalarProperty Name="SiparisID" ColumnName="SiparisID" />
+                <ScalarProperty Name="UrunID" ColumnName="UrunID" />
+                <ScalarProperty Name="UrunAdet" ColumnName="UrunAdet" />
+                <ScalarProperty Name="AdetFiyat" ColumnName="AdetFiyat" />
+                <ScalarProperty Name="ToplamFiyat" ColumnName="ToplamFiyat" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SiparisTbl">
+            <EntityTypeMapping TypeName="DhSoftDBModel.SiparisTbl">
+              <MappingFragment StoreEntitySet="SiparisTbl">
+                <ScalarProperty Name="SiparisID" ColumnName="SiparisID" />
+                <ScalarProperty Name="MusteriID" ColumnName="MusteriID" />
+                <ScalarProperty Name="SiparisKayıtTarih" ColumnName="SiparisKayıtTarih" />
+                <ScalarProperty Name="SiparisTeslimTarih" ColumnName="SiparisTeslimTarih" />
+                <ScalarProperty Name="SiparisAciklama" ColumnName="SiparisAciklama" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UrunTbl">
+            <EntityTypeMapping TypeName="DhSoftDBModel.UrunTbl">
+              <MappingFragment StoreEntitySet="UrunTbl">
+                <ScalarProperty Name="UrunID" ColumnName="UrunID" />
+                <ScalarProperty Name="UrunAdi" ColumnName="UrunAdi" />
+                <ScalarProperty Name="BarkodNO" ColumnName="BarkodNO" />
+                <ScalarProperty Name="StokAdeti" ColumnName="StokAdeti" />
+                <ScalarProperty Name="Fiyati" ColumnName="Fiyati" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SiparisFormu" FunctionName="DhSoftDBModel.Store.SiparisFormu">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DhSoftDBModel.SiparisFormu_Result">
+                <ScalarProperty Name="Ad" ColumnName="Ad" />
+                <ScalarProperty Name="UrunAdi" ColumnName="UrunAdi" />
+                <ScalarProperty Name="UrunAdet" ColumnName="UrunAdet" />
+                <ScalarProperty Name="AdetFiyat" ColumnName="AdetFiyat" />
+                <ScalarProperty Name="ToplamFiyat" ColumnName="ToplamFiyat" />
+                <ScalarProperty Name="SiparisKayıtTarih" ColumnName="SiparisKayıtTarih" />
+                <ScalarProperty Name="SiparisTeslimTarih" ColumnName="SiparisTeslimTarih" />
+                <ScalarProperty Name="SiparisAciklama" ColumnName="SiparisAciklama" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="DhSoftDBModel.Store.sp_alterdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="DhSoftDBModel.Store.sp_creatediagram" />
+          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="DhSoftDBModel.Store.sp_dropdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="DhSoftDBModel.Store.sp_helpdiagramdefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DhSoftDBModel.sp_helpdiagramdefinition_Result">
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="DhSoftDBModel.Store.sp_helpdiagrams">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DhSoftDBModel.sp_helpdiagrams_Result">
+                <ScalarProperty Name="Database" ColumnName="Database" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="DhSoftDBModel.Store.sp_renamediagram" />
+          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="DhSoftDBModel.Store.sp_upgraddiagrams" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
